@@ -9,32 +9,41 @@ body .form-control {
     transition: transform 1s, background-color 1s, color 1s;
 }
 
-body .form-control:focus {
+body input.form-control:focus {
     box-shadow: none;
     transform: translateY(-6px);
     background-color: #f1f0f1;
     color: #000;
 }
 
-body .form-control::placeholder {
+body input.form-control::placeholder {
     color: #f1f0f1
 }
 
-body .form-control:focus::placeholder {
+body input.form-control:focus::placeholder {
     color: #000
-}
-
-body h1 {
-    transition: transform 0.5s;
-}
-
-body h1:hover {
-    transform: translateY(-6px);
 }
 
 body {
     overflow-x: auto;
     text-align: center;
+}
+
+div.square {
+    width: 150px;
+    height: 150px;
+    background-color: rgba(79, 81, 87, 0.25);
+    border-radius: 2.2rem;
+    margin: auto;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+.image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container-fluid {

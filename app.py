@@ -28,7 +28,15 @@ db = SQL("sqlite:///database.db")
 @app.route("/")
 @login_required
 def index():
-    return "TODO"
+    user = db.execute("SELECT * FROM user WHERE id = ?", session["user_id"])[0]
+    user["username"] = user["username"].capitalize()
+
+    roles = db.execute("SELECT * FROM role")
+    animDelays = []
+    for i in range(len(roles)):
+        animDelays.append(((i + 1) * 300) + 4500)
+
+    return render_template("index.html", user=user, roles=roles, animDelays=animDelays)
 
 
 @app.route("/register", methods=["GET", "POST"])

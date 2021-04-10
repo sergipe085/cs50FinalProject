@@ -1,0 +1,32 @@
+.selected {
+    opacity: 1;
+
+    transition: opacity 0.5s;
+}
+
+.notSelected {
+    opacity: 0.5;
+
+    transition: opacity 0.5s;
+}
+
+.notSelected:hover {
+    opacity: 1;
+}
+
+@keyframes role-up {
+    from {
+        transform: translateY(36px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 0.5;
+    }
+}
+
+.role-up {
+    animation-name: role-up;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}
