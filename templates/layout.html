@@ -19,7 +19,11 @@
 
         <script>
             window.onbeforeunload = function(e) {
-                document.getElementById('mainDiv').className = 'out';
+                const mainDiv = document.getElementById('mainDiv')
+                mainDiv.className = 'out';
+                setTimeout(() => {
+                    mainDiv.parentElement.removeChild(mainDiv)
+                }, 1000)
             }
         </script>
     </body>

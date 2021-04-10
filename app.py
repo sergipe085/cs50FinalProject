@@ -38,7 +38,13 @@ def index():
         for i in range(len(roles)):
             animDelays.append(((i + 1) * 300) + 4500)
 
-        return render_template("index.html", user=user, roles=roles, animDelays=animDelays)
+        jobs = db.execute("SELECT * FROM job WHERE role_id IN (SELECT role_id FROM user_role WHERE user_id = ?)", session["user_id"])
+        jobsAnimDelays = []
+        for i in range(len(jobs)):
+            jobsAnimDelays.append(((i + 1) * 300) + 1000)
+        print(jobsAnimDelays)
+
+        return render_template("index.html", user=user, roles=roles, animDelays=animDelays, jobsAnimDelays=jobsAnimDelays, jobs=jobs)
     def post():
         db.execute("UPDATE user SET first_time = 1 WHERE id = ?", session["user_id"])
 

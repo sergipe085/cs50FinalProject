@@ -60,9 +60,9 @@
 
             <div id="main">
                 <button class="openbtn animate-down" onclick="openNav()" style="display: inline-block; float: left; border-radius: 1rem; animation-delay: 800ms;">☰</button>  
-                <div style="display: inline-block;">
-                    <!-- <h1 id="welcomeText" class="animate-down mt-5" style="animation-delay: 400ms;">Welcome, {{ user.username }}!</h1> -->
-                    <h1 class="animate-down mt-5" style="animation-delay: 200ms;">Job50</h1>
+                <div style="display: inline-block;" id="divMain">
+                    <h1 id="welcomeText" class="animate-down mt-5" style="animation-delay: 400ms;">Welcome, {{ user.username }}!</h1>
+                    <!-- <h1 class="animate-down mt-5" style="animation-delay: 200ms;">Job50</h1>
                     <div class="input-group square animate-down" style="margin: auto; width: 20rem; height: 4rem; border-radius: 1rem; animation-delay: 600ms;">
                         <div class="image-container">
                             <img src="./static/images/search_icon.png" style="width: 1.8rem; margin-left: 1.2rem; margin-right: 0.2rem;">
@@ -72,8 +72,21 @@
 
                     <div class="mt-5">
                         <h3>Jobs for you</h3>
-                        <div class="square"></div>
-                    </div>
+                        <div class="container">
+                            {% for job in jobs %}
+                                <div onclick="document.getElementById('job{{ job.id }}').submit()" class="mb-4 animate-down notSelected" style="display: inline-flex; margin-right: 1rem; cursor: pointer; animation-delay: {{ jobsAnimDelays[loop.index - 1] }}ms;">
+                                    <form action="/job" id="job{{ job.id }}">
+                                        <div class="square" style="width: 150px; height: 200px; padding-top: 1rem;">
+                                            <img src="{{ roles[job.role_id - 1].img_path }}" style="width:40%;">
+                                            <p class="mt-1" style="font-size: smaller;">{{ job.name }}</p>
+                                            <button class="form-control button" type="submit" style="animation-delay: 300ms; top: 10rem; border-radius: 0.6rem;"><span>View</span></button>
+                                        </div>
+                                        <input name="job_id" type="hidden" value="{{ job.id }}">
+                                    </form>
+                                </div>
+                            {% endfor %} 
+                        </div>                    
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -81,7 +94,7 @@
         <script>
             setTimeout(() => {
                 const element = document.getElementById("welcomeText")
-                const mainDiv = document.getElementById("mainDiv")
+                const mainDiv = document.getElementById("divMain")
 
                 if (element) {
                     element.className = "out mt-5"
@@ -96,7 +109,26 @@
                                 <img src="./static/images/search_icon.png" style="width: 1.8rem; margin-left: 1.2rem; margin-right: 0.2rem;">
                             </div>
                             <input class="form-control input-static animate-up-input" placeholder="Find your dream job..." style="background: none; color: #f1f0f1; box-shadow: none; font-size: x-large;">
-                        </div>`
+                        </div>
+
+                        <div class="mt-5">
+                            <h3 class="animate-down" style="animation-delay: 1000ms">Jobs for you</h3>
+                            <div class="container">
+                                {% for job in jobs %}
+                                    <div onclick="document.getElementById('job{{ job.id }}').submit()" class="mb-4 role-down notSelected" style="display: inline-flex; margin-right: 1rem; cursor: pointer; animation-delay: {{ jobsAnimDelays[loop.index - 1] }}ms;">
+                                        <form action="/job" id="job{{ job.id }}">
+                                            <div class="square" style="width: 150px; height: 200px; padding-top: 1rem;">
+                                                <img src="{{ roles[job.role_id - 1].img_path }}" style="width:40%;">
+                                                <p class="mt-1" style="font-size: smaller;">{{ job.name }}</p>
+                                                <button class="form-control button" type="submit" style="animation-delay: 300ms; top: 10rem; border-radius: 0.6rem;"><span>View</span></button>
+                                            </div>
+                                            <input name="job_id" type="hidden" value="{{ job.id }}">
+                                        </form>
+                                    </div>
+                                {% endfor %} 
+                            </div>                    
+                        </div>
+                        `
                         mainDiv.appendChild(newDiv)
                     }, 1000)
                 }

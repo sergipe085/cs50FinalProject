@@ -20,13 +20,30 @@
         opacity: 0;
     }
     to {
-        transform: translateX(0px);
+        transform: translateY(0px);
+        opacity: 0.5;
+    }
+}
+
+@keyframes role-down {
+    from {
+        transform: translateY(-36px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0px);
         opacity: 0.5;
     }
 }
 
 .role-up {
     animation-name: role-up;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}
+
+.role-down {
+    animation-name: role-down;
     animation-duration: 1000ms;
     animation-fill-mode: backwards;
 }
