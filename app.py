@@ -91,3 +91,9 @@ def login():
     if request.method == "POST":
         return post()
     return get("")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")

@@ -3,7 +3,7 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <div style="margin-top: 9rem; display: inline-block;" id="mainDiv">
+    <div style="margin-top: 9rem; display: inline-block;">
         <h1 class="animate-right">Register</h1>
         <form action="/register" method="POST">
             <div class="form-group mb-1 animate-right" style="animation-delay: 100ms;">
@@ -17,11 +17,5 @@
         </form>
         <h1 class="animate-up" style="animation-delay: 1700ms;">Job50</h1>
     </div>
-
-    <script>
-        window.onbeforeunload = function(e) {
-            document.getElementById('mainDiv').className = 'out';
-        }
-    </script>
 {% endblock %}
 
