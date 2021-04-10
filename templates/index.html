@@ -1,50 +1,62 @@
 {% extends "layout.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}
+    {% if user.first_time == 0 %}
+        Hi!
+    {% else %}
+        Home
+    {% endif %}
+{% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="./static/roles.css">  
 {% endblock %}
 
 {% block body %}
-    <div class="mt-4" id="mainDiv">
-        <h1 class="animate-up" style="animation-delay: 1000ms;">Hi {{ user.username }}!</h1>
-        <h1 class="animate-up" style="animation-delay: 3000ms;">choose one<br>you like</h1>
+    {% if user.first_time == 0 %}
+        <div class="mt-4" id="mainDiv">
+            <h1 class="animate-up" style="animation-delay: 1000ms;">Hi {{ user.username }}!</h1>
+            <h1 class="animate-up" style="animation-delay: 3000ms;">choose one<br>you like</h1>
 
-        <div class="container mt-5"  style="width: 23rem;">
-            <div class="row row-cols-2">
-                {% for role in roles %}
-                    <div onclick="select({{ role.id }}, this)" style="cursor: pointer; animation-delay: {{ animDelays[loop.index - 1] }}ms;" class="notSelected role-up">
-                        <div class="square mb-3 image-container">
-                            <img src="{{ role.img_path }}" style="width: 50%;">
+            <div class="container mt-5"  style="width: 23rem;">
+                <div class="row row-cols-2">
+                    {% for role in roles %}
+                        <div onclick="select({{ role.id }}, this)" style="cursor: pointer; animation-delay: {{ animDelays[loop.index - 1] }}ms;" class="notSelected role-up">
+                            <div class="square mb-3 image-container">
+                                <img src="{{ role.img_path }}" style="width: 50%;">
+                            </div>
+                            <h5>{{ role.name }}</h5>
                         </div>
-                        <h5>{{ role.name }}</h5>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
-
+        <script>
+            function select(id, a) {
+                const selectedElement = document.querySelector(".selected")
+                if (selectedElement) {
+                    selectedElement.className = "notSelected"
+                }
+                else {
+                    const newDiv = document.createElement("div")
+                    newDiv.innerHTML += `
+                    <form action="/", method="POST">
+                        <input name="role_id" type="hidden" id="roleInput">
+                        <button type="submit" class="form-control animate-up button" type="submit" style="animation-delay: 500ms; top: 10rem;"><span>Start</span></button>
+                    </form>`
+                    document.getElementById("mainDiv").appendChild(newDiv)
+                }
+                a.className = "selected"
+                document.getElementById("roleInput").value = id
+            }
+        </script>
+    {% else %}
+        <h1>Welcome {{ user.username }}</h1>
+    {% endif %}
+    
     <script>
         window.onbeforeunload = function(e) {
             document.getElementById('mainDiv').className = 'out';
-        }
-
-        function select(id, a) {
-            const selectedElement = document.querySelector(".selected")
-            if (selectedElement) {
-                selectedElement.className = "notSelected"
-            }
-            else {
-                const newDiv = document.createElement("div")
-                newDiv.innerHTML += `
-                <form action="/">
-                    <input type="hidden" id="roleInput">
-                    <button type="submit" class="form-control animate-up button" type="submit" style="animation-delay: 500ms; top: 10rem;"><span>Start</span></button>
-                </form>`
-                document.getElementById("mainDiv").appendChild(newDiv)
-            }
-            a.className = "selected"
-            console.log(a)
         }
     </script>
 {% endblock %}

@@ -25,19 +25,31 @@ Session(app)
 
 db = SQL("sqlite:///database.db")
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    user = db.execute("SELECT * FROM user WHERE id = ?", session["user_id"])[0]
-    user["username"] = user["username"].capitalize()
 
-    roles = db.execute("SELECT * FROM role")
-    animDelays = []
-    for i in range(len(roles)):
-        animDelays.append(((i + 1) * 300) + 4500)
+    def get():
+        user = db.execute("SELECT * FROM user WHERE id = ?", session["user_id"])[0]
+        user["username"] = user["username"].capitalize()
 
-    return render_template("index.html", user=user, roles=roles, animDelays=animDelays)
+        roles = db.execute("SELECT * FROM role")
+        animDelays = []
+        for i in range(len(roles)):
+            animDelays.append(((i + 1) * 300) + 4500)
 
+        return render_template("index.html", user=user, roles=roles, animDelays=animDelays)
+    def post():
+        db.execute("UPDATE user SET first_time = 1 WHERE id = ?", session["user_id"])
+
+        role_id = request.form.get("role_id")
+        db.execute("INSERT INTO user_role(user_id, role_id) VALUES(?, ?)", session["user_id"], role_id)
+
+        return get()
+
+    if request.method == "POST":
+        return post()
+    return get()
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
