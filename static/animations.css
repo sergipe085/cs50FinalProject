@@ -9,6 +9,17 @@
     }
 }
 
+@keyframes down {
+    from {
+        transform: translateY(-36px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
 @keyframes right {
     from {
         transform: translateX(-1000px);
@@ -42,6 +53,12 @@
 
 .animate-up {
     animation-name: up;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}
+
+.animate-down {
+    animation-name: down;
     animation-duration: 1000ms;
     animation-fill-mode: backwards;
 }

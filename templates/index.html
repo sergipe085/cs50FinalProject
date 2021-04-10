@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "sidebar.html" %}
 
 {% block title %}
     {% if user.first_time == 0 %}
@@ -10,6 +10,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="./static/roles.css">  
+    <link rel="stylesheet" href="./static/sidebar.css">  
 {% endblock %}
 
 {% block body %}
@@ -51,7 +52,51 @@
             }
         </script>
     {% else %}
-        <h1>Welcome {{ user.username }}</h1>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
+        </div>
+
+        <div id="main">
+            <button class="openbtn" onclick="openNav()" style="display: inline-block; float: left; border-radius: 1rem;">☰</button>  
+            <div id="mainDiv" style="display: inline-block;">
+                <!-- <h1 id="welcomeText" class="animate-down mt-5" style="animation-delay: 400ms;">Welcome, {{ user.username }}!</h1> -->
+                <h1 class="animate-down mt-5" style="animation-delay: 200ms;">Job50</h1>
+                <div class="input-group square animate-down" style="margin: auto; width: 20rem; height: 4rem; border-radius: 1rem; animation-delay: 600ms;">
+                    <div class="image-container">
+                        <img src="./static/images/search_icon.png" style="width: 1.8rem; margin-left: 1.2rem; margin-right: 0.2rem;">
+                    </div>
+                    <input class="form-control input-static animate-up-input" placeholder="Find your dream job..." style="background: none; color: #f1f0f1; box-shadow: none; font-size: x-large;">
+                </div>
+            </div>
+        </div>
+
+        <script>
+            setTimeout(() => {
+                const element = document.getElementById("welcomeText")
+                const mainDiv = document.getElementById("mainDiv")
+
+                if (element) {
+                    element.className = "out mt-5"
+                    setTimeout(() => {
+                        mainDiv.removeChild(element)
+                    }, 1000)
+                }
+            }, 3000)
+
+            function openNav() {
+                document.getElementById("mySidebar").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidebar").style.width = "0";
+                document.getElementById("main").style.marginLeft= "0";
+            }
+        </script>
     {% endif %}
     
     <script>

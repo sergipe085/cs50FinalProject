@@ -1,0 +1,32 @@
+body .form-control {
+    display: inline-block;
+    width: auto;
+    border-radius: 6rem;
+    border: none;
+    background-color: #536de4;
+    color: #f1f0f1;
+
+    transition: background-color 1s, color 1s;
+}
+
+body input.form-control:not(.input-static):focus {
+    background-color: #f1f0f1;
+    color: #000;
+    box-shadow: none;
+}
+
+body input.form-control:not(.input-static)::placeholder {
+    color: #f1f0f1
+}
+
+body input.form-control:not(.input-static):focus::placeholder {
+    color: #000
+}
+
+body input.animate-up-input {
+    transition: transform 1s
+}
+
+body input.animate-up-input:focus {
+    transform: translateY(-6px);
+}
