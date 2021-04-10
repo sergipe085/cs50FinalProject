@@ -63,6 +63,7 @@ def login():
         user = user[0]
         if check_password_hash(user["password"], password):
             session["user_id"] = user["id"]
+            print(user["id"])
             return redirect("/")
     def get(msg):
         return render_template("login.html", msg=msg)
