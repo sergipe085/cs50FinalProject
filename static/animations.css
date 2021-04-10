@@ -1,0 +1,14 @@
+@keyframes up {
+    from {
+        transform: translateY(36px);
+    }
+    to {
+        transform: translateX(0px)
+    }
+}
+
+.animate-up {
+    animation-name: up;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}

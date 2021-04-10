@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 from cs50 import SQL
 from werkzeug.security import generate_password_hash, check_password_hash
+from tempfile import mkdtemp
+from helpers import login_required
 
 app = Flask(__name__)
 
@@ -32,10 +34,6 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
 
-    if request.method == "POST": 
-        post()
-    get()
-
     def post():
         username = request.form.get("username")
         password = request.form.get("password")
@@ -43,7 +41,11 @@ def register():
         db.execute("INSERT INTO user(username, password) VALUES(?, ?)", username, generate_password_hash(password))
         return redirect("/login")
     def get(msg):
-        return render_template("register.html", msg=msg)
+        return render_template("layout.html", msg=msg)
+
+    if request.method == "POST": 
+        return post()
+    return get("")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -51,18 +53,20 @@ def login():
 
     session.clear()
 
-    if request.method == "POST":
-        post()
-    get()
-
     def post():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        user = db.execute("SELECT * FROM user WHERE username = ?")
+        user = db.execute("SELECT * FROM user WHERE username = ?", username)
         if len(user) == 0:
             return "User not found"
-
-        
+        user = user[0]
+        if check_password_hash(user["password"], password):
+            session["user_id"] = user["id"]
+            return redirect("/")
     def get(msg):
         return render_template("login.html", msg=msg)
+
+    if request.method == "POST":
+        return post()
+    return get("")

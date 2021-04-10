@@ -8,6 +8,13 @@ main {
     text-align: center;
 }
 
+.container-fluid {
+    background-color: #202459;
+    color: #fff;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
 /* main img {
     width: 100%;
 } */
