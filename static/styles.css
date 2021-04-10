@@ -1,16 +1,45 @@
-main .form-control {
+body .form-control {
     display: inline-block;
     width: auto;
+    border-radius: 6rem;
+    border: none;
+    background-color: #536de4;
+    color: #f1f0f1;
+
+    transition: transform 1s, background-color 1s, color 1s;
 }
 
-main {
+body .form-control:focus {
+    box-shadow: none;
+    transform: translateY(-6px);
+    background-color: #f1f0f1;
+    color: #000;
+}
+
+body .form-control::placeholder {
+    color: #f1f0f1
+}
+
+body .form-control:focus::placeholder {
+    color: #000
+}
+
+body h1 {
+    transition: transform 0.5s;
+}
+
+body h1:hover {
+    transform: translateY(-6px);
+}
+
+body {
     overflow-x: auto;
     text-align: center;
 }
 
 .container-fluid {
-    background-color: #202459;
-    color: #fff;
+    background-color: #222140;
+    color: #f1f0f1;
     font-size: xx-large;
     font-weight: bold;
 }

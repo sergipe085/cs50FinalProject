@@ -1,14 +1,48 @@
 @keyframes up {
     from {
         transform: translateY(36px);
+        opacity: 0;
     }
     to {
-        transform: translateX(0px)
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes right {
+    from {
+        transform: translateX(-1000px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 
 .animate-up {
     animation-name: up;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}
+
+.animate-right {
+    animation-name: right;
+    animation-duration: 1500ms;
+    animation-fill-mode: backwards;
+}
+
+.animate-appear {
+    animation-name: appear;
     animation-duration: 1000ms;
     animation-fill-mode: backwards;
 }
