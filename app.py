@@ -41,7 +41,7 @@ def register():
         db.execute("INSERT INTO user(username, password) VALUES(?, ?)", username, generate_password_hash(password))
         return redirect("/login")
     def get(msg):
-        return render_template("layout.html", msg=msg)
+        return render_template("register.html", msg=msg)
 
     if request.method == "POST": 
         return post()

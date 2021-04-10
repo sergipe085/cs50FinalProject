@@ -1,21 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}Login{% endblock %}
-{% block foo %}{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block body %}
-    <div style="margin-top: 9rem; display: inline-block;">
-        <h1 class="animate-right">Login</h1>
+    <div style="margin-top: 9rem; display: inline-block;" id="mainDiv">
+        <h1 class="animate-right">Register</h1>
         <form action="/login" method="POST">
-            <div class="form-group mb-3 animate-right" style="animation-delay: 100ms;">
+            <div class="form-group mb-1 animate-right" style="animation-delay: 100ms;">
                 <input name="username" autocomplete="off" type="text" class="form-control" placeholder="Username" aria-label="Username">
             </div>
             <div class="form-group animate-right" style="animation-delay: 200ms;">
                 <input name="password" autocomplete="off" type="password" class="form-control" placeholder="Password" aria-label="Password">
             </div>
-            <button type="submit">Login</button>
+            <p class="animate-up" style="font-size: small; animation-delay: 2000ms;">Do you have an account?<a href="/login"> Login</a>.</p>
+            <button class="form-control animate-right button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Register</span></button>
         </form>
-        <h1 class="animate-up mt-5" style="animation-delay: 1700ms;">Job50</h1>
+        <h1 class="animate-up" style="animation-delay: 1700ms;">Job50</h1>
     </div>
+
+    <script>
+        window.onbeforeunload = function(e) {
+            document.getElementById('mainDiv').className = 'out';
+        }
+    </script>
 {% endblock %}
 

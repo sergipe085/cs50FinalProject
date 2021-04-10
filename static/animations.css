@@ -29,6 +29,17 @@
     }
 }
 
+@keyframes out {
+    from {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
 .animate-up {
     animation-name: up;
     animation-duration: 1000ms;
@@ -43,6 +54,12 @@
 
 .animate-appear {
     animation-name: appear;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}
+
+.out {
+    animation-name: out;
     animation-duration: 1000ms;
     animation-fill-mode: backwards;
 }
