@@ -134,7 +134,7 @@ def profile():
         role = int(request.form.get("role"))
 
         if not check_password_hash(user["password"], psw_confirm):
-            return "Password confirmation failed!"
+            return render_template("message.html", message="Password confirmation failed!", type="Error")
 
         if username != "":
             db.execute("UPDATE user SET username = ?", username)
@@ -143,7 +143,7 @@ def profile():
         if role != user_role:
             db.execute("UPDATE user_role SET role_id = ? WHERE user_id = ?", role, session["user_id"])
 
-        return "Data changed"
+        return render_template("message.html", message="Data Changed", type="Sucess!")
 
     if request.method == "POST":
         return post()
