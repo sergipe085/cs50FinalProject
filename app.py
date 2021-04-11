@@ -103,3 +103,15 @@ def login():
 def logout():
     session.clear()
     return redirect("/login")
+
+
+@app.route("/job")
+@login_required
+def job():
+    job_id = request.args.get("job_id")
+    job = db.execute("SELECT * FROM job WHERE id = ?", job_id)[0]
+
+    responsabilities = db.execute("SELECT responsability FROM responsabilities WHERE job_id = ?", job_id)
+    print(responsabilities)
+
+    return render_template("job.html", job=job, responsabilities=responsabilities)
