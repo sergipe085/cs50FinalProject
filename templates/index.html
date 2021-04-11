@@ -10,7 +10,6 @@
 
 {% block head %}
     <link rel="stylesheet" href="./static/roles.css">  
-    <link rel="stylesheet" href="./static/sidebar.css">  
 {% endblock %}
 
 {% block body %}
@@ -55,11 +54,12 @@
         <div> 
             <div id="mySidebar" class="sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                <a href="/profile">Profile</a>
                 <a href="/logout">Logout</a>
             </div>
 
-            <div id="main">
-                <button class="openbtn animate-down" onclick="openNav()" style="display: inline-block; float: left; border-radius: 1rem; animation-delay: 800ms;">☰</button>  
+            <div id="main" class="mt-5">
+                <button class="openbtn animate-down" onclick="openNav()" style="display: inline-block; float: left; border-radius: 1rem; animation-delay: 800ms; margin-left: 2rem;">☰</button>  
                 <div style="display: inline-block;" id="divMain">
                     <h1 id="welcomeText" class="animate-down mt-5" style="animation-delay: 400ms;">Welcome, {{ user.username }}!</h1>
                     <!-- <h1 class="animate-down mt-5" style="animation-delay: 200ms;">Job50</h1>

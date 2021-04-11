@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block body %}
+    <div class="mt-5">
+        <button class="openbtn animate-down" onclick="window.history.back()" style="border-radius: 1rem; animation-delay: 800ms; display: inline-block; float: left; margin-left: 2rem;">←</button> 
+        <div style="display: inline-block">
+            <h1 class="animate-down mb-5" style="animation-delay: 200ms; position: relative;">Profile</h1>
+            <div>
+                <form action="/profile" method="POST">
+                    <div class="input-group square animate-down mb-3" style="margin: auto; width: 20rem; height: 4rem; border-radius: 1rem; animation-delay: 400ms;">
+                        <input  autocomplete="off" name="username" class="form-control input-static animate-up-input" placeholder="Username..." style="background: none; color: #f1f0f1; box-shadow: none; font-size: x-large;">
+                    </div>
+                    <div class="input-group square animate-down mb-3" style="margin: auto; width: 20rem; height: 4rem; border-radius: 1rem; animation-delay: 400ms;">
+                        <input name="password" type="password" class="form-control input-static animate-up-input" placeholder="Password..." style="background: none; color: #f1f0f1; box-shadow: none; font-size: x-large;">
+                    </div>
+                    <div class="input-group square animate-down mb-3" style="margin: auto; width: 20rem; height: 4rem; border-radius: 1rem; animation-delay: 400ms;">
+                        <select name="role" class="form-select" aria-label="Default select example" style="border: none; background: none; box-shadow: none; color: #f1f0f1; font-size: x-large;">
+                            {% for role in roles %}
+                                {% if role.id == user_role %}
+                                    <option value="{{ role.id }}" selected style="color: black;">{{ role.name }}</option>
+                                {% else %}
+                                    <option value="{{ role.id }}" style="color: black;">{{ role.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>                
+                    </div>
+                    <div class="input-group square animate-down mb-3 mt-5" style="margin: auto; width: 20rem; height: 4rem; border-radius: 1rem; animation-delay: 400ms;">
+                        <input name="psw_confirm" type="password" class="form-control input-static animate-up-input" placeholder="Confirm password..." style="background: none; color: #f1f0f1; box-shadow: none; font-size: x-large;">
+                    </div>
+                    <button class="form-control button" type="submit" style="animation-delay: 600ms; top: 10rem; border-radius: 0.6rem;"><span>Change</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}  

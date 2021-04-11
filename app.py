@@ -115,3 +115,36 @@ def job():
     print(responsabilities)
 
     return render_template("job.html", job=job, responsabilities=responsabilities)
+
+
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    user_role = int(db.execute("SELECT role_id FROM user_role WHERE user_id = ?", session["user_id"])[0]["role_id"])
+    user = db.execute("SELECT * FROM user WHERE id = ?", session["user_id"])[0]
+
+    def get():
+        roles = db.execute("SELECT * FROM role")
+
+        return render_template("profile.html", roles=roles, user=user, user_role=user_role)
+    def post():
+        username = request.form.get("username")
+        password = request.form.get("password")
+        psw_confirm = request.form.get("psw_confirm")
+        role = int(request.form.get("role"))
+
+        if not check_password_hash(user["password"], psw_confirm):
+            return "Password confirmation failed!"
+
+        if username != "":
+            db.execute("UPDATE user SET username = ?", username)
+        if password != "" and not check_password_hash(user["password"], password):
+            db.execute("UPDATE user SET password = ?", generate_password_hash(password))
+        if role != user_role:
+            db.execute("UPDATE user_role SET role_id = ? WHERE user_id = ?", role, session["user_id"])
+
+        return "Data changed"
+
+    if request.method == "POST":
+        return post()
+    return get()
