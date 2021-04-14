@@ -91,12 +91,14 @@ def login():
             session["user_id"] = user["id"]
             print(user["id"])
             return redirect("/")
-    def get(msg):
-        return render_template("login.html", msg=msg)
+        else:
+            return "Password wrong"
+    def get():
+        return render_template("login.html")
 
     if request.method == "POST":
         return post()
-    return get("")
+    return get()
 
 
 @app.route("/logout")
@@ -148,3 +150,10 @@ def profile():
     if request.method == "POST":
         return post()
     return get()
+
+
+@app.route("/apply", methods=["POST"])
+@login_required
+def apply():
+    job_id = request.form.get("job_id")
+    return render_template("message.html", message="You're applied to this job! Wait for response.", type="Sucess!") 
