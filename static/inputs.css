@@ -15,6 +15,11 @@ body input.form-control:not(.input-static):focus {
     box-shadow: none;
 }
 
+body .form-control:disabled {
+    background-color: #394785;
+    color: #f1f0f1;
+}
+
 body input.form-control:not(.input-static)::placeholder {
     color: #f1f0f1
 }

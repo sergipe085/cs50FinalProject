@@ -112,11 +112,11 @@ def logout():
 def job():
     job_id = request.args.get("job_id")
     job = db.execute("SELECT * FROM job WHERE id = ?", job_id)[0]
+    applied = len(db.execute("SELECT * FROM applies WHERE job_id = ? AND user_applied_id = ?", job_id, session["user_id"])) > 0
 
     responsabilities = db.execute("SELECT responsability FROM responsabilities WHERE job_id = ?", job_id)
-    print(responsabilities)
 
-    return render_template("job.html", job=job, responsabilities=responsabilities)
+    return render_template("job.html", job=job, responsabilities=responsabilities, applied=applied)
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -155,7 +155,13 @@ def profile():
 @app.route("/apply", methods=["POST"])
 @login_required
 def apply():
-    job = request.form.get("job")
-    db.execute("INSERT INTO applies(job_id, owner_id, user_applied_id) VALUES(?, ?, ?)", job["id"], job["user_id"], session["user_id"])
+    job_id = request.form.get("job_id")
+    owner_id = request.form.get("owner_id")
+    already_applied = db.execute("SELECT * FROM applies WHERE user_applied_id = (?) AND owner_id = (?)", session["user_id"], owner_id)
+
+    if len(already_applied) > 0:
+        return render_template("message.html", message="You're already applied to this job!", type="Error") 
+
+    db.execute("INSERT INTO applies(job_id, owner_id, user_applied_id) VALUES(?, ?, ?)",  job_id, owner_id, session["user_id"])
 
     return render_template("message.html", message="You're applied to this job! Wait for response.", type="Sucess!") 

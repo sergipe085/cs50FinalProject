@@ -20,10 +20,15 @@
             </ul>
         </div>
         <div class="mt-5">
-            <form action="/apply" method="POST">
-                <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Apply</span></button>
-                <input name="job" type="hidden" value="{{ job }}">
-            </form>
+            {% if applied %}
+                <button class="form-control animate-down" style="animation-delay: 300ms; top: 10rem;" disabled><span>Applied</span></button>
+            {% else %}
+                <form action="/apply" method="POST">
+                    <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Apply</span></button>
+                    <input name="job_id" type="hidden" value="{{ job.id }}">
+                    <input name="owner_id" type="hidden" value="{{ job.user_id }}">
+                </form>
+            {% endif %}
         </div>
     </div>
 {% endblock %}  
