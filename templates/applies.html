@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Your applies{% endblock %}
+
+{% block body %}
+    <button class="openbtn animate-down mt-5" onclick="window.history.back()" style="border-radius: 1rem; animation-delay: 800ms; display: inline-block; float: left; margin-left: 2rem;">←</button> 
+    <div style="display: inline-block">
+        {% for job in applied_jobs %}
+            <div class="mt-5">
+                <h6 class="animate-down">{{ job.name }}</h6>
+                {% if applies[loop.index - 1].accepted == 2 %}
+                    <h6 class="animate-down">Rejected</h6>
+                {% elif applies[loop.index - 1].accepted == 1 %}
+                    <h6 class="animate-down">Accepted</h6>
+                {% else %}
+                    <h6 class="animate-down">Pending</h6>
+                {% endif %}
+                <form action="/job">
+                    <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>View Job</span></button>
+                    <input name="job_id" type="hidden" value="{{ job.id }}">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+

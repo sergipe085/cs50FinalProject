@@ -157,7 +157,7 @@ def profile():
 def apply():
     job_id = request.form.get("job_id")
     owner_id = request.form.get("owner_id")
-    already_applied = db.execute("SELECT * FROM applies WHERE user_applied_id = (?) AND owner_id = (?)", session["user_id"], owner_id)
+    already_applied = db.execute("SELECT * FROM applies WHERE user_applied_id = (?) AND job_id = ?", session["user_id"], job_id)
 
     if len(already_applied) > 0:
         return render_template("message.html", message="You're already applied to this job!", type="Error") 
@@ -165,3 +165,12 @@ def apply():
     db.execute("INSERT INTO applies(job_id, owner_id, user_applied_id) VALUES(?, ?, ?)",  job_id, owner_id, session["user_id"])
 
     return render_template("message.html", message="You're applied to this job! Wait for response.", type="Sucess!") 
+
+
+@app.route("/applies", methods=["GET"])
+@login_required
+def applies():
+    applies = db.execute("SELECT * FROM applies WHERE user_applied_id = ?", session["user_id"])
+    applied_jobs = db.execute("SELECT * FROM job WHERE id IN (SELECT job_id FROM applies WHERE user_applied_id = ?)", session["user_id"])
+    print(applied_jobs)
+    return render_template("applies.html", applies=applies, applied_jobs=applied_jobs)
