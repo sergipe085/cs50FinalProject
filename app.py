@@ -155,5 +155,7 @@ def profile():
 @app.route("/apply", methods=["POST"])
 @login_required
 def apply():
-    job_id = request.form.get("job_id")
+    job = request.form.get("job")
+    db.execute("INSERT INTO applies(job_id, owner_id, user_applied_id) VALUES(?, ?, ?)", job["id"], job["user_id"], session["user_id"])
+
     return render_template("message.html", message="You're applied to this job! Wait for response.", type="Sucess!") 

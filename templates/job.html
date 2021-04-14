@@ -19,5 +19,11 @@
                 {% endfor %}
             </ul>
         </div>
+        <div class="mt-5">
+            <form action="/apply" method="POST">
+                <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Apply</span></button>
+                <input name="job" type="hidden" value="{{ job }}">
+            </form>
+        </div>
     </div>
 {% endblock %}  
