@@ -113,10 +113,14 @@ def job():
     job_id = request.args.get("job_id")
     job = db.execute("SELECT * FROM job WHERE id = ?", job_id)[0]
     applied = len(db.execute("SELECT * FROM applies WHERE job_id = ? AND user_applied_id = ?", job_id, session["user_id"])) > 0
-
+    job_is_mine = job["user_id"] == session["user_id"]
     responsabilities = db.execute("SELECT responsability FROM responsabilities WHERE job_id = ?", job_id)
 
-    return render_template("job.html", job=job, responsabilities=responsabilities, applied=applied)
+    applies = None
+    if job_is_mine:
+        applies = db.execute("SELECT * FROM applies WHERE job_id = ?", job_id)
+
+    return render_template("job.html", job=job, responsabilities=responsabilities, applied=applied, job_is_mine=job_is_mine, applies=applies)
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -174,3 +178,21 @@ def applies():
     applied_jobs = db.execute("SELECT * FROM job WHERE id IN (SELECT job_id FROM applies WHERE user_applied_id = ?)", session["user_id"])
     print(applied_jobs)
     return render_template("applies.html", applies=applies, applied_jobs=applied_jobs)
+
+@app.route("/jobs", methods=["GET"])
+def jobs():
+    jobs = db.execute("SELECT * FROM job WHERE user_id = ?", session["user_id"])
+    applies = db.execute("SELECT * FROM applies WHERE owner_id = ?", session["user_id"])
+    return render_template("jobs.html", jobs=jobs, applies=applies)
+
+@app.route("/accept", methods=["POST"])
+def accept():
+    job_id = request.form.get("job_id")
+    user_applied_id = request.form.get("user_applied_id")
+    apply_id = request.form.get("apply_id")
+    owner_id = db.execute("SELECT user_id FROM job WHERE id = ?", job_id)[0]["user_id"]
+
+    if owner_id != session["user_id"]:
+        return render_template("message.html", message="You aren't the job owner!", type="Error")
+    db.execute("UPDATE applies SET accepted = 1 WHERE id = ?", apply_id)
+    return render_template("message.html", message=f"User {user_applied_id} accepted!", type="Sucess!")

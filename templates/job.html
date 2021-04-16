@@ -10,24 +10,50 @@
             <h3 class="animate-down" style="display: inline-block; margin-left: 1.2rem; animation-delay: 400ms;">{{ job.rates }}</h3>
         </div>
         <div class="mt-5">
-            <h3 class="animate-down" style="animation-delay: 1000ms;">Responsabilities</h3>
-            <ul class="animate-down" style="animation-delay: 1200ms; width: 100%; margin: auto; font-size: 1rem;">
-                {% for responsability in responsabilities %}
-                    <li>
-                        {{ responsability.responsability }}
-                    </li>
-                {% endfor %}
-            </ul>
+            {% if responsabilities|length != 0 %}
+                <h4 class="animate-down" style="animation-delay: 1000ms;">Responsabilities</h4>
+                <ul class="animate-down" style="animation-delay: 1200ms; width: 100%; margin: auto; font-size: 1rem;">
+                    {% for responsability in responsabilities %}
+                        <li>
+                            {{ responsability.responsability }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
         <div class="mt-5">
-            {% if applied %}
-                <button class="form-control animate-down" style="animation-delay: 300ms; top: 10rem;" disabled><span>Applied</span></button>
+            {% if job_is_mine %}
+                {% if applies|length == 0 %}
+                    <h4>This job doesnt have applies!</h4>
+                {% else %}
+                    <h4>Applies</h4>
+                    <ol>
+                        {% for apply in applies %}
+                            <li>
+                                <form action="/user" style="display: inline-block;">
+                                    <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>View User</span></button>
+                                </form>
+                                <form action="/accept" style="display: inline-block;" method="POST">
+                                    <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Accept</span></button>
+                                    <input name="job_id" type="hidden" value="{{ job.id }}">
+                                    <input name="owner_id" type="hidden" value="{{ job.user_id }}">
+                                    <input name="user_applied_id" type="hidden" value="{{ apply.user_applied_id }}">
+                                    <input name="apply_id" type="hidden" value="{{ apply.id }}">
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
             {% else %}
-                <form action="/apply" method="POST">
-                    <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Apply</span></button>
-                    <input name="job_id" type="hidden" value="{{ job.id }}">
-                    <input name="owner_id" type="hidden" value="{{ job.user_id }}">
-                </form>
+                {% if applied %}
+                    <button class="form-control animate-down" style="animation-delay: 300ms; top: 10rem;" disabled><span>Applied</span></button>
+                {% else %}
+                    <form action="/apply" method="POST">
+                        <button class="form-control animate-down button" type="submit" style="animation-delay: 300ms; top: 10rem;"><span>Apply</span></button>
+                        <input name="job_id" type="hidden" value="{{ job.id }}">
+                        <input name="owner_id" type="hidden" value="{{ job.user_id }}">
+                    </form>
+                {% endif %}
             {% endif %}
         </div>
     </div>
