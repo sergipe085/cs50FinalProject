@@ -29,10 +29,10 @@ db = SQL("sqlite:///database.db")
 @login_required
 def index():
 
-    def get():
-        user = db.execute("SELECT * FROM user WHERE id = ?", session["user_id"])[0]
-        user["username"] = user["username"].capitalize()
+    user = db.execute("SELECT * FROM user WHERE id = ?", session["user_id"])[0]
+    user["username"] = user["username"].capitalize()
 
+    def introductionGet00():
         roles = db.execute("SELECT * FROM role")
         animDelays = []
         for i in range(len(roles)):
@@ -44,12 +44,48 @@ def index():
             jobsAnimDelays.append(((i + 1) * 300) + 1000)
         print(jobsAnimDelays)
 
-        return render_template("index.html", user=user, roles=roles, animDelays=animDelays, jobsAnimDelays=jobsAnimDelays, jobs=jobs)
-    def post():
+        return render_template("index.html", user=user, roles=roles, animDelays=animDelays, jobsAnimDelays=jobsAnimDelays, jobs=jobs, introduction_index=user["introduction_index"])
+
+    def introductionPost00():
+        role_id = request.form.get("role_id")
+        db.execute("INSERT INTO user_role(user_id, role_id) VALUES(?, ?)", session["user_id"], role_id)
+
+    def introductionGet01():
+        return render_template("index.html", user=user, introduction_index=user["introduction_index"])
+
+    def introductionPost01():
+        role_id = request.form.get("role_id")
+        db.execute("INSERT INTO user_role(user_id, role_id) VALUES(?, ?)", session["user_id"], role_id)
+
+    def introductionGet02():
+        return render_template("index.html", introduction_index=user["introduction_index"])
+
+    def introductionPost02():
         db.execute("UPDATE user SET first_time = 1 WHERE id = ?", session["user_id"])
 
         role_id = request.form.get("role_id")
         db.execute("INSERT INTO user_role(user_id, role_id) VALUES(?, ?)", session["user_id"], role_id)
+
+    introductionsGet = {
+        "0": introductionGet00,
+        "1": introductionGet01,
+        "2": introductionGet02
+    }
+
+    introductionsPost = {
+        "0": introductionPost00,
+        "1": introductionPost01,
+        "2": introductionPost02
+    }
+
+    def get():
+        print(f'asdasd{user["introduction_index"]}')
+        return introductionsGet[str(user["introduction_index"])]()
+    def post():
+        if user["introduction_index"] < len(introductionsPost) - 1:
+            db.execute("UPDATE user SET introduction_index = introduction_index + 1 WHERE id = ?", session["user_id"])
+
+        introductionsPost[str(user["introduction_index"])]()
 
         return get()
 

@@ -20,6 +20,17 @@
     }
 }
 
+@keyframes disapear-down {
+    from {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(36px);
+        opacity: 0;
+    }
+}
+
 @keyframes right {
     from {
         transform: translateX(-1000px);
@@ -59,6 +70,12 @@
 
 .animate-down {
     animation-name: down;
+    animation-duration: 1000ms;
+    animation-fill-mode: backwards;
+}
+
+.disapear-down {
+    animation-name: disapear-down;
     animation-duration: 1000ms;
     animation-fill-mode: backwards;
 }

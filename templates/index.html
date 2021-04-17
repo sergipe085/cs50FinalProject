@@ -9,48 +9,88 @@
 {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="./static/roles.css">  
+    <link rel="stylesheet" href="./static/roles.css"> 
 {% endblock %}
 
 {% block body %}
     {% if user.first_time == 0 %}
-        <div class="mt-4" id="mainDiv">
-            <h1 class="animate-up" style="animation-delay: 1000ms;">Hi {{ user.username }}!</h1>
-            <h1 class="animate-up" style="animation-delay: 3000ms;">choose one<br>you like</h1>
+        {% if introduction_index == 0 %}
+            <div class="mt-4" id="mainDiv">
+                <h1 class="animate-up" style="animation-delay: 1000ms;">Hi {{ user.username }}!</h1>
+                <h1 class="animate-up" style="animation-delay: 3000ms;">choose one<br>you like</h1>
 
-            <div class="container mt-5"  style="width: 23rem;">
-                <div class="row row-cols-2">
-                    {% for role in roles %}
-                        <div onclick="select({{ role.id }}, this)" style="cursor: pointer; animation-delay: {{ animDelays[loop.index - 1] }}ms;" class="notSelected role-up">
-                            <div class="square mb-3 image-container">
-                                <img src="{{ role.img_path }}" style="width: 50%;">
+                <div class="container mt-5"  style="width: 23rem;">
+                    <div class="row row-cols-2">
+                        {% for role in roles %}
+                            <div onclick="select({{ role.id }}, this)" style="cursor: pointer; animation-delay: {{ animDelays[loop.index - 1] }}ms;" class="notSelected role-up">
+                                <div class="square mb-3 image-container">
+                                    <img src="{{ role.img_path }}" style="width: 50%;">
+                                </div>
+                                <h5>{{ role.name }}</h5>
                             </div>
-                            <h5>{{ role.name }}</h5>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <script>
-            function select(id, a) {
-                const selectedElement = document.querySelector(".selected")
-                if (selectedElement) {
-                    selectedElement.className = "notSelected"
-                }
-                else {
-                    const newDiv = document.createElement("div")
-                    newDiv.innerHTML += `
-                    <form action="/", method="POST">
-                        <input name="role_id" type="hidden" id="roleInput">
-                        <button type="submit" class="form-control animate-up button" type="submit" style="animation-delay: 500ms; top: 10rem;"><span>Start</span></button>
-                    </form>`
-                    document.getElementById("mainDiv").appendChild(newDiv)
-                }
+            <script>
+                function select(id, a) {
+                    const selectedElement = document.querySelector(".selected")
+                    if (selectedElement) {
+                        selectedElement.className = "notSelected"
+                    }
+                    else {
+                        const newDiv = document.createElement("div")
+                        newDiv.innerHTML += `
+                        <form action="/", method="POST">
+                            <input name="role_id" type="hidden" id="roleInput">
+                            <button type="submit" class="form-control animate-up button" type="submit" style="animation-delay: 500ms; top: 10rem;"><span>Start</span></button>
+                        </form>`
+                        document.getElementById("mainDiv").appendChild(newDiv)
+                    }
 
-                a.className = "selected"
-                document.getElementById("roleInput").value = id
-            }
-        </script>
+                    a.className = "selected"
+                    document.getElementById("roleInput").value = id
+                }
+            </script>
+        {% elif introduction_index == 1 %}
+            <div class="mt-5">
+                <h2 class="animate-down" style="animation-delay: 200ms;">Tell more about you, {{user.username}} 🤔</h2>
+                <form action="/" methods="POST">
+                    <div class="input-group container animate-down mt-4" style="animation-delay: 800ms;">
+                        <textarea id="desc" name="description" maxlength="1000" class="form-control input-static" type="text" style="background: none; border: none; border-radius: 1rem; background-color: rgba(79, 81, 87, 0.25); color: #f1f0f1; width: 50rem; box-shadow: none; font-size: large;"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <script>
+                const textarea = document.getElementById("desc");
+                const submitButton = document.createElement("div");
+                submitButton.innerHTML = `<button type="submit" class="form-control animate-up button" type="submit" style="top: 10rem;"><span>Next</span></button>`;
+                const form = document.querySelector("form");
+
+                textarea.addEventListener("keydown", () => {
+                    const val = textarea.value;
+                    if (val.length >= 50 && !form.contains(submitButton)) {
+                        submitButton.classList.remove("disapear-down");
+                        submitButton.classList.add("animate-up")
+                        submitButton.childNodes[0].disabled = false;
+                        form.appendChild(submitButton);
+                    }
+                    else if (form.contains(submitButton) && val.length < 50) {
+                        submitButton.classList.remove("animate-up");
+                        submitButton.classList.add("disapear-down")
+                        submitButton.childNodes[0].disabled = true;
+                        setTimeout(() => {
+                            if (form.contains(submitButton)) {
+                                form.removeChild(submitButton);
+                            }
+                        }, 1000)
+                    }
+                })
+            </script>
+        {% else %}
+            
+        {% endif %}
     {% else %}
         <div> 
             <div id="mySidebar" class="sidebar">
